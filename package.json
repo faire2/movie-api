@@ -10,7 +10,8 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1",
-    "react-spinners": "^0.8.3"
+    "react-spinners": "^0.8.3",
+    "shaka-player": "^3.0.1"
   },
   "scripts": {
     "start": "react-scripts start",

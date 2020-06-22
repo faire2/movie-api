@@ -27,7 +27,6 @@ export default function SquadActionsCarousel(props) {
             try {
                 const result = await axios.get(apiContext.apiAddress + queryType + apiContext.apiKey + apiContext.language
                     + SortBy.POPULARITY_DESC + getApiPage(1) + genre);
-                console.log(result);
                 if (mounted) {
                     setCarouselData(result.data);
                 }
@@ -37,24 +36,23 @@ export default function SquadActionsCarousel(props) {
             }
             setIsLoading(false);
         }
+
         fetchCarouselData();
 
         return () => {
             mounted = false;
         }
-    }, [apiContext.apiAddress, apiContext.apiKey, apiContext.language, genre]);
+    }, [apiContext.apiAddress, apiContext.apiKey, apiContext.language, genre, queryType]);
 
     function handleArrowClick(direction) {
         const offset = 20.5;
         if (direction === Direction.LEFT) {
             if (xOffSet < 0) {
                 setXOffset(xOffSet + offset);
-                console.log("New carousel offset is: " + xOffSet);
             }
         } else if (direction === Direction.RIGHT) {
             if (xOffSet > (carouselData.results.length - 2) * -offset)
                 setXOffset(xOffSet - offset);
-            console.log("New carousel offset is: " + xOffSet);
         } else {
             console.error("Unknown direction in function handleArrowClick: " + direction)
         }
@@ -65,14 +63,14 @@ export default function SquadActionsCarousel(props) {
         overflow: "hidden",
         position: "relative",
         marginBottom: "2vh",
-        minHeight: "20vw",
+        minHeight: "20vh",
     };
 
     const innerStyle = {
         display: "flex",
         flexFlow: "row",
         marginLeft: xOffSet + "vh",
-        transition:  "1.2s"
+        transition: "1.2s",
     };
 
     const infoStyle = {
@@ -82,26 +80,31 @@ export default function SquadActionsCarousel(props) {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+        zIndex: isError ? 1 : +1,
     };
-
 
     return (
         <div>
+            <h3>{props.header}</h3>
             <div style={containerStyle}>
-                <h3>{props.header}</h3>
+                {(isError || isLoading) &&
                 <div style={infoStyle}>
                     <PropagateLoader color={"#00b0f1"} loading={isLoading} size={25}/>
-                    {isError && <ErrorMsgPanel message={"Unable to fetch data! Please try again later..."}/>}
+                    <ErrorMsgPanel message={"Unable to fetch data! Please try again later..."}/>}
                 </div>
+                }
                 <div style={innerStyle}>
-                    {carouselData.results && carouselData.results.map((item, i) => {
-                        return <PosterItem imgSrc={item.poster_path} title={queryType === QueryType.DISCOVER_MOVIE ?
-                            item.title : item.name} key={item.id}/>;
-                    })}
+                    {carouselData.results && carouselData.results.map((item) =>
+                        <div key={item.id}>
+                            <PosterItem imgSrc={item.poster_path} title={queryType === QueryType.DISCOVER_MOVIE ?
+                                item.title : item.name} item={item}/>
+                        </div>
+                    )}
                 </div>
-                <CarouselArrow direction={Direction.LEFT} handleArrowClick={() => handleArrowClick(Direction.LEFT)} glyph="<"/>
+                <CarouselArrow direction={Direction.LEFT} handleArrowClick={() => handleArrowClick(Direction.LEFT)}
+                               glyph="<"/>
                 <CarouselArrow direction={Direction.RIGHT} handleArrowClick={() => handleArrowClick(Direction.RIGHT)}
-                       glyph=">"/>
+                               glyph=">"/>
             </div>
         </div>
     )
