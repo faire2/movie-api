@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from "react";
 import axios from "axios";
 import {ApiContext} from "../ApiContext";
 import {Direction, QueryType, SortBy} from "../../enums";
-import {getApiPage} from "../functions/apiFunctions";
+import {getApiPage} from "../functions/getApiPage";
 import {PropagateLoader} from "react-spinners";
 import {PosterItem} from "./PosterItem";
 import {CarouselArrow} from "./CarouselArrow";

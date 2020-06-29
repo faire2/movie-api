@@ -3,7 +3,7 @@ import "./App.css"
 import {Genre, Language, QueryType} from "./enums";
 import {ApiContext} from "./components/ApiContext";
 import Carousel from "./components/carousel/Carousel";
-import DetailPanel from "./components/itemDetail/DetailPanel";
+import DetailPanel from "./components/detailPanel/DetailPanel";
 
 function App() {
     // detail panel modal
@@ -39,8 +39,10 @@ function App() {
             <h1>Movie Api</h1>
             <ApiContext.Provider value={apiContextValues}>
                 {showDetailPanel &&
-                <div style={detailPanelWrapperStyle} onClick={() => setShowDetailPanel(false)}>
-                    <DetailPanel/>
+                <div>
+                        <DetailPanel/>
+                    <div style={detailPanelWrapperStyle} onClick={() => setShowDetailPanel(false)}>
+                    </div>
                 </div>}
                 <Carousel header={"Oblíbené filmy"} queryType={QueryType.DISCOVER_MOVIE}/>
                 <Carousel header={"Oblíbené seriály"} queryType={QueryType.DISCOVER_TV}/>

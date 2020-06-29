@@ -1,11 +1,15 @@
-import React, {useContext} from "react";
+import React, {useContext, useState} from "react";
 import {ApiContext} from "../ApiContext";
 import {ImgSize, Medium} from "../../enums";
+import {ReactShakaWrapper} from "../player/ReactShakaWrapper";
 
 export default function DetailPanel() {
+    const [showPlayer, setShowPlayer] = useState(false);
+    const [videoLoaded, setVideoLoaded] = useState(false);
+
     const apiContext = useContext(ApiContext);
     const detailData = apiContext.detailData;
-    const isPanelDisplayed = apiContext.showDetailPanel;
+    const videoRef = React.useRef(null);
 
     const title = detailData.title ? detailData.title : detailData.name;
     const description = detailData.overview ? detailData.overview : "Bližší informace nejsou momentálně k dispozici.";
@@ -22,7 +26,6 @@ export default function DetailPanel() {
         marginTop: "10vh",
         backgroundColor: "#0a181c",
         // ensures the carousels' items are clickable
-        zIndex: isPanelDisplayed ? 1 : -1,
         borderRadius: "0.4vw",
         transition: "1s",
         color: "#d9d9d9",
@@ -31,6 +34,7 @@ export default function DetailPanel() {
         backgroundImage: `url(${backDropImgSrc})`,
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
+        zIndex: 2,
     };
 
     const textColumnStyle = {
@@ -49,29 +53,50 @@ export default function DetailPanel() {
         width: "100%",
         minHeight: "20vh",
         zIndex: 2,
+        display: "flex",
+        flexFlow: "row"
     };
 
     // additional information are contained in a container at the bottom of the panel
     const additionalInfoStyle = {
         position: "absolute",
         bottom: "2vh",
+        backgroundColor: "red",
+        display: "flex",
+        flexFlow: "row",
     };
+
+    // player element is position on top of background image when not full-screen
+    const playerPositionStyle = {
+        left: "35%"
+    };
+
+    function handleOnClick() {
+        setShowPlayer(true);
+
+    }
 
     return (
         <div style={containerStyle}>
             <div style={gradientStyle}>
                 <div style={textColumnStyle}>
                     <h1>{title}</h1>
-                    {description ? <div>{description}</div> : "Bližší informace k tomuto filmu nejsou dostupné."
+                    {description ? <div>{description}</div> : "Bližší informace nejsou dostupné."
                     }
                     <div style={additionalInfoStyle}>
                         <div>
-                            Průměrné hodnocení: {vote}
+                            <div>
+                                Průměrné hodnocení: {vote}
+                            </div>
+                            <div>
+                                Datum vydání: {release}
+                            </div>
                         </div>
-                        <div>
-                            Datum vydání: {release}
-                        </div>
+                        <button onClick={() => handleOnClick()}>Button</button>
                     </div>
+                </div>
+                <div style={playerPositionStyle}>
+                    {showPlayer && <ReactShakaWrapper ref={videoRef}/>}
                 </div>
             </div>
         </div>
