@@ -9,6 +9,7 @@ export default function DetailPanel() {
 
     const apiContext = useContext(ApiContext);
     const detailData = apiContext.detailData;
+    // initial reference for video player
     const videoRef = React.useRef(null);
 
     const title = detailData.title ? detailData.title : detailData.name;
@@ -18,14 +19,13 @@ export default function DetailPanel() {
     const backDropImgSrc = Medium.IMG + ImgSize.LARGE + detailData.backdrop_path;
 
     const containerStyle = {
-        position: "absolute",
+        position: "fixed",
         left: "9vw",
-        width: "80vw",
+        width: "85vw",
         height: "auto",
         minHeight: "70vh",
         marginTop: "10vh",
         backgroundColor: "#0a181c",
-        // ensures the carousels' items are clickable
         borderRadius: "0.4vw",
         transition: "1s",
         color: "#d9d9d9",
@@ -34,7 +34,7 @@ export default function DetailPanel() {
         backgroundImage: `url(${backDropImgSrc})`,
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
-        zIndex: 2,
+        zIndex: 3,
     };
 
     const textColumnStyle = {

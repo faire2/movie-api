@@ -1,6 +1,7 @@
 export const QueryType = Object.freeze({
     DISCOVER_MOVIE: "discover/movie?",
-    DISCOVER_TV: "discover/tv?"
+    DISCOVER_TV: "discover/tv?",
+    SEARCH_MULTI: "search/multi?"
 });
 
 export const Language = Object.freeze({

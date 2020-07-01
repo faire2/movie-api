@@ -2,27 +2,27 @@ import React, {useState} from 'react';
 import "./App.css"
 import {Genre, Language, QueryType} from "./enums";
 import {ApiContext} from "./components/ApiContext";
-import Carousel from "./components/carousel/Carousel";
 import DetailPanel from "./components/detailPanel/DetailPanel";
+import SearchPanel from "./components/searchPanel/SearchPanel";
+import {ModalWrapper} from "./components/ModalWrapper";
+import {MemoizedCarousel} from "./components/carousel/Carousel";
 
 function App() {
     // detail panel modal
     const [detailData, setDetailData] = useState(null);
     const [showDetailPanel, setShowDetailPanel] = useState(false);
+    const [showSearchPanel, setShowSearchPanel] = useState(false);
 
-    //todo implement language switch
+    // Language selector with appropriate state hook would be set here.
+    // Labels would be provided by internationalization layer, e.g. i18next
     /*const [language, setLanguage] = useState(Language.CZECH);*/
     const language = Language.CZECH;
 
-    const detailPanelWrapperStyle = {
-        top: "-10vh",
-        width: "100vw",
-        height: "1100vh",
-        backgroundColor: "rgba(235,242,255,0.36)",
-        position: "fixed",
-        zIndex: 1,
-        paddingTop: "10vh",
-    };
+    // wrapper around modal panels hides them onClick
+    function hideModalPanels() {
+        setShowDetailPanel(false);
+        setShowSearchPanel(false);
+    }
 
     const apiContextValues = {
         apiAddress: "https://api.themoviedb.org/3/",
@@ -33,6 +33,8 @@ function App() {
         setDetailData: setDetailData,
         showDetailPanel: showDetailPanel,
         setShowDetailPanel: setShowDetailPanel,
+        showSearchPanel: showSearchPanel,
+        setShowSearchPanel: setShowSearchPanel,
     };
     return (
         <div className="App">
@@ -40,14 +42,19 @@ function App() {
             <ApiContext.Provider value={apiContextValues}>
                 {showDetailPanel &&
                 <div>
-                        <DetailPanel/>
-                    <div style={detailPanelWrapperStyle} onClick={() => setShowDetailPanel(false)}>
-                    </div>
+                    <DetailPanel/>
+                    <ModalWrapper hideModalPanels={hideModalPanels}/>
                 </div>}
-                <Carousel header={"Oblíbené filmy"} queryType={QueryType.DISCOVER_MOVIE}/>
-                <Carousel header={"Oblíbené seriály"} queryType={QueryType.DISCOVER_TV}/>
-                <Carousel header={"Rodinné filmy"} queryType={QueryType.DISCOVER_MOVIE} genre={Genre.FAMILY}/>
-                <Carousel header={"Dokumenty"} queryType={QueryType.DISCOVER_MOVIE} genre={Genre.DOCUMENTARY}/>
+                {showSearchPanel &&
+                <div>
+                    <SearchPanel/>
+                    <ModalWrapper hideModalPanels={hideModalPanels}/>
+                </div>
+                }
+                <MemoizedCarousel header={"Oblíbené filmy"} queryType={QueryType.DISCOVER_MOVIE}/>
+                <MemoizedCarousel header={"Oblíbené seriály"} queryType={QueryType.DISCOVER_TV}/>
+                <MemoizedCarousel header={"Rodinné filmy"} queryType={QueryType.DISCOVER_MOVIE} genre={Genre.FAMILY}/>
+                <MemoizedCarousel header={"Dokumenty"} queryType={QueryType.DISCOVER_MOVIE} genre={Genre.DOCUMENTARY}/>
             </ApiContext.Provider>
         </div>
     );
