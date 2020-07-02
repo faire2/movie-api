@@ -6,9 +6,9 @@ export function FancyButton(props) {
 
     const basicStyle = {
         textDecoration: "none",
-        padding: "20px",
+        padding: "1vh",
         textAlign: "center",
-        marginTop: "1vh",
+        fontSize: "2vh"
     };
 
     const buttonStyle = {

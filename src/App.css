@@ -3,17 +3,17 @@
 .App {
   margin: 1vh;
   font-family: "Josefin Sans", sans-serif;
-  font-size: 2vw;
+  font-size: 2vh;
 }
 
 h1 {
   text-align: center;
   color: rgba(0, 147, 216, 0.84);
-  font-size: 3vw;
+  font-size: 3vh;
 }
 
 h3 {
   color: rgba(0, 147, 216, 0.84);
   margin-bottom: 0.2vh;
-  font-size: 2vw;
+  font-size: 2vh;
 }

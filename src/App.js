@@ -6,6 +6,7 @@ import DetailPanel from "./components/detailPanel/DetailPanel";
 import SearchPanel from "./components/searchPanel/SearchPanel";
 import {ModalWrapper} from "./components/ModalWrapper";
 import {MemoizedCarousel} from "./components/carousel/Carousel";
+import {FancyButton} from "./components/FancyButton";
 
 function App() {
     // detail panel modal
@@ -30,6 +31,14 @@ function App() {
         justifyContent: "center"
     };
 
+    // search button position
+    const searchButtonStyle = {
+        position: "absolute",
+        width: "15vw",
+        left: "0",
+        top: "0"
+    };
+
     const apiContextValues = {
         apiAddress: "https://api.themoviedb.org/3/",
         apiKey: "api_key=4c367d0da4105ce1dcb1dc2d68dec2d9",
@@ -45,8 +54,9 @@ function App() {
 
     return (
         <div>
-            <h1>Movie Api</h1>
             <ApiContext.Provider value={apiContextValues}>
+                <h1>Movie Api</h1>
+                <div style={searchButtonStyle}><FancyButton text={"Vyhledávání"} onClick={() => setShowSearchPanel(true)}/></div>
                 <div>
                     {showDetailPanel &&
                     <div style={detailWrapperStyle}>
@@ -54,7 +64,7 @@ function App() {
                         <ModalWrapper hideModalPanels={hideModalPanels}/>
                     </div>}
                     {showSearchPanel &&
-                    <div>
+                    <div style={detailWrapperStyle}>
                         <SearchPanel/>
                         <ModalWrapper hideModalPanels={hideModalPanels}/>
                     </div>

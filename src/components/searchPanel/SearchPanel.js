@@ -9,7 +9,6 @@ export default function SearchPanel() {
     const containerStyle = {
         position: "fixed",
         padding: "2vw",
-        left: "9vw",
         width: "80vw",
         height: "auto",
         minHeight: "70vh",

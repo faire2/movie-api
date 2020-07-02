@@ -42,7 +42,7 @@ export default function DetailPanel() {
         width: "30%",
         height: "100%",
         paddingLeft: "3vw",
-        marginBottom: "7vh",
+        marginBottom: "9vh",
         top: 0,
     };
 
@@ -59,13 +59,13 @@ export default function DetailPanel() {
     // definition of text limits complemented with scrollbar
     const scrollbarStyle = {
         width: "100%",
-        height: "58%"
+        height: "55%"
     };
 
     // additional information are contained in a container at the bottom of the panel
     const additionalInfoStyle = {
         position: "absolute",
-        top: "85%",
+        bottom: "1vh",
     };
 
     // player element is position on top of background image when not full-screen
