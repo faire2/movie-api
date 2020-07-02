@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Error panel snapshot 1`] = `
+<div
+  style={
+    Object {
+      "alignItems": "center",
+      "color": "white",
+      "display": "flex",
+      "height": "100%",
+      "justifyContent": "center",
+      "width": "100%",
+    }
+  }
+>
+  <div
+    style={
+      Object {
+        "backgroundColor": "#f16d8d",
+        "borderRadius": "2vw",
+        "padding": "1vw",
+      }
+    }
+  >
+    Test message
+  </div>
+</div>
+`;
