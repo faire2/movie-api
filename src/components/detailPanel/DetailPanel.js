@@ -2,6 +2,7 @@ import React, {useContext, useState} from "react";
 import {ApiContext} from "../ApiContext";
 import {ImgSize, Medium} from "../../enums";
 import {ReactShakaWrapper} from "../player/ReactShakaWrapper";
+import {FancyButton} from "../FancyButton";
 
 export default function DetailPanel() {
     const [showPlayer, setShowPlayer] = useState(false);
@@ -9,7 +10,6 @@ export default function DetailPanel() {
 
     const apiContext = useContext(ApiContext);
     const detailData = apiContext.detailData;
-    // initial reference for video player
     const videoRef = React.useRef(null);
 
     const title = detailData.title ? detailData.title : detailData.name;
@@ -19,13 +19,14 @@ export default function DetailPanel() {
     const backDropImgSrc = Medium.IMG + ImgSize.LARGE + detailData.backdrop_path;
 
     const containerStyle = {
-        position: "fixed",
+        position: "absolute",
         left: "9vw",
-        width: "85vw",
+        width: "80vw",
         height: "auto",
         minHeight: "70vh",
         marginTop: "10vh",
         backgroundColor: "#0a181c",
+        // ensures the carousels' items are clickable
         borderRadius: "0.4vw",
         transition: "1s",
         color: "#d9d9d9",
@@ -34,7 +35,7 @@ export default function DetailPanel() {
         backgroundImage: `url(${backDropImgSrc})`,
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
-        zIndex: 3,
+        zIndex: 2,
     };
 
     const textColumnStyle = {
@@ -61,20 +62,19 @@ export default function DetailPanel() {
     const additionalInfoStyle = {
         position: "absolute",
         bottom: "2vh",
-        backgroundColor: "red",
-        display: "flex",
-        flexFlow: "row",
     };
 
     // player element is position on top of background image when not full-screen
-    const playerPositionStyle = {
-        left: "35%"
+    // display value ensures that player starts full-screen after loading the video
+    const playerStyle = {
+        left: "35%",
+        display: videoLoaded ? "block" : "none",
     };
 
     function handleOnClick() {
         setShowPlayer(true);
-
     }
+
 
     return (
         <div style={containerStyle}>
@@ -85,18 +85,16 @@ export default function DetailPanel() {
                     }
                     <div style={additionalInfoStyle}>
                         <div>
-                            <div>
-                                Průměrné hodnocení: {vote}
-                            </div>
-                            <div>
-                                Datum vydání: {release}
-                            </div>
+                            Průměrné hodnocení: {vote}
                         </div>
-                        <button onClick={() => handleOnClick()}>Button</button>
+                        <div>
+                            Datum vydání: {release}
+                        </div>
+                        <FancyButton text={"Přehrát video"} onClick={handleOnClick}/>
                     </div>
                 </div>
-                <div style={playerPositionStyle}>
-                    {showPlayer && <ReactShakaWrapper ref={videoRef}/>}
+                <div style={playerStyle}>
+                    {showPlayer && <ReactShakaWrapper ref={videoRef} setVideoLoaded={setVideoLoaded}/>}
                 </div>
             </div>
         </div>
