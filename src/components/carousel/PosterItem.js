@@ -1,6 +1,6 @@
 import {ImgSize, Medium} from "../../enums";
 import React, {useContext, useState} from "react";
-import {ErrorMsgPanel} from "../ErrorMsgPanel";
+import {ErrorMsgPanel} from "../ErrorMsgPanel/ErrorMsgPanel";
 import {ApiContext} from "../ApiContext";
 
 export function PosterItem(props) {

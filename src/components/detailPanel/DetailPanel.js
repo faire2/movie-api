@@ -3,7 +3,7 @@ import {ApiContext} from "../ApiContext";
 import {ImgSize, Medium} from "../../enums";
 import {ReactShakaWrapper} from "../player/ReactShakaWrapper";
 import {FancyButton} from "../FancyButton";
-import { Scrollbars } from 'react-custom-scrollbars';
+import {Scrollbars} from 'react-custom-scrollbars';
 import {getFormattedDate} from "../functions/getFormattedDate";
 
 export default function DetailPanel() {
@@ -68,11 +68,17 @@ export default function DetailPanel() {
         bottom: "1vh",
     };
 
-    // player element is position on top of background image when not full-screen
+    // player element is positioned on in center of panel when not full-screened
     // display value ensures that player starts full-screen after loading the video
+    // clicking on the wrapper unmounts the player
     const playerStyle = {
-        left: "35%",
-        display: videoLoaded ? "block" : "none",
+        position: "absolute",
+        height: "100%",
+        width: "100%",
+        display: videoLoaded ? "flex" : "none",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: showPlayer ? "rgba(235,242,255,0.36)" : "transparent",
     };
 
     function handleOnClick() {
@@ -101,7 +107,7 @@ export default function DetailPanel() {
                         <FancyButton text={"Přehrát video"} onClick={handleOnClick}/>
                     </div>
                 </div>
-                <div style={playerStyle}>
+                <div style={playerStyle} onClick={() => setShowPlayer(false)}>
                     {showPlayer && <ReactShakaWrapper ref={videoRef} setVideoLoaded={setVideoLoaded}/>}
                 </div>
             </div>

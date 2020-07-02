@@ -22,6 +22,7 @@ export const ReactShakaWrapper = forwardRef((props, ref) => {
                     try {
                         if (mounted) {
                             await player.load('https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8');
+                            props.setVideoLoaded(true);
                             try {
                                 ref.current.requestFullscreen();
                             } catch (e) {
@@ -35,18 +36,18 @@ export const ReactShakaWrapper = forwardRef((props, ref) => {
             }
 
             loadVideo();
-            return () => {
+            return async () => {
                 mounted = false;
+                await player.destroy();
             }
         }
-    );
+    , []);
 
     return (
         <video
             ref={ref}
             width="50%"
             height="30%"
-            //poster={`http://image.tmdb.org/t/p/w1280/${detail.backdrop_path}`}
             controls
             autoPlay
         />

@@ -4,7 +4,7 @@ export const ModalWrapper = (props) => {
     const modalPanelWrapperStyle = {
         top: "-10vh",
         width: "100vw",
-        height: "1100vh",
+        height: "100vh",
         backgroundColor: "rgba(235,242,255,0.36)",
         position: "fixed",
         zIndex: 1,

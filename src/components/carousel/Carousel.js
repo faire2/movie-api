@@ -6,7 +6,7 @@ import {getApiPage} from "../functions/getApiPage";
 import {PropagateLoader} from "react-spinners";
 import {PosterItem} from "./PosterItem";
 import {CarouselArrow} from "./CarouselArrow";
-import {ErrorMsgPanel} from "../ErrorMsgPanel";
+import {ErrorMsgPanel} from "../ErrorMsgPanel/ErrorMsgPanel";
 
 function Carousel(props) {
     const apiContext = useContext(ApiContext);
