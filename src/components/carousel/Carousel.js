@@ -94,6 +94,7 @@ function Carousel(props) {
     return (
         <div>
             <h3>{props.header}</h3>
+            {carouselData.results && (carouselData.results.length > 0) &&
             <div style={containerStyle}>
                 {(isError || isLoading) &&
                 <div style={infoStyle}>
@@ -109,11 +110,13 @@ function Carousel(props) {
                         </div>
                     )}
                 </div>
+
                 <CarouselArrow direction={Direction.LEFT} handleArrowClick={() => handleArrowClick(Direction.LEFT)}
                                glyph="<"/>
                 <CarouselArrow direction={Direction.RIGHT} handleArrowClick={() => handleArrowClick(Direction.RIGHT)}
                                glyph=">"/>
             </div>
+            }
         </div>
     )
 }
