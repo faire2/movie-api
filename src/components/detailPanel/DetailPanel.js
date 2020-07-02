@@ -4,6 +4,7 @@ import {ImgSize, Medium} from "../../enums";
 import {ReactShakaWrapper} from "../player/ReactShakaWrapper";
 import {FancyButton} from "../FancyButton";
 import { Scrollbars } from 'react-custom-scrollbars';
+import {getFormattedDate} from "../functions/getFormattedDate";
 
 export default function DetailPanel() {
     const [showPlayer, setShowPlayer] = useState(false);
@@ -95,7 +96,7 @@ export default function DetailPanel() {
                             Průměrné hodnocení: {vote}
                         </div>
                         <div>
-                            Datum vydání: {release}
+                            Datum vydání: {getFormattedDate(release)}
                         </div>
                         <FancyButton text={"Přehrát video"} onClick={handleOnClick}/>
                     </div>
