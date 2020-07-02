@@ -3,6 +3,7 @@ import {ApiContext} from "../ApiContext";
 import {ImgSize, Medium} from "../../enums";
 import {ReactShakaWrapper} from "../player/ReactShakaWrapper";
 import {FancyButton} from "../FancyButton";
+import { Scrollbars } from 'react-custom-scrollbars';
 
 export default function DetailPanel() {
     const [showPlayer, setShowPlayer] = useState(false);
@@ -19,12 +20,10 @@ export default function DetailPanel() {
     const backDropImgSrc = Medium.IMG + ImgSize.LARGE + detailData.backdrop_path;
 
     const containerStyle = {
-        position: "absolute",
-        left: "9vw",
+        position: "fixed",
         width: "80vw",
-        height: "auto",
-        minHeight: "70vh",
-        marginTop: "10vh",
+        maxWidth: 780,
+        height: "70vh",
         backgroundColor: "#0a181c",
         // ensures the carousels' items are clickable
         borderRadius: "0.4vw",
@@ -40,12 +39,10 @@ export default function DetailPanel() {
 
     const textColumnStyle = {
         width: "30%",
-        minHeight: "80%",
+        height: "100%",
         paddingLeft: "3vw",
-        paddingBottom: "7vh",
+        marginBottom: "7vh",
         top: 0,
-        fontSize: "1.2rem",
-        overflow: "visible",
     };
 
     // the background image is covered with a gradient overlay which serves as a text backdrop
@@ -58,10 +55,16 @@ export default function DetailPanel() {
         flexFlow: "row"
     };
 
+    // definition of text limits complemented with scrollbar
+    const scrollbarStyle = {
+        width: "100%",
+        height: "58%"
+    };
+
     // additional information are contained in a container at the bottom of the panel
     const additionalInfoStyle = {
         position: "absolute",
-        bottom: "2vh",
+        top: "85%",
     };
 
     // player element is position on top of background image when not full-screen
@@ -81,7 +84,11 @@ export default function DetailPanel() {
             <div style={gradientStyle}>
                 <div style={textColumnStyle}>
                     <h1>{title}</h1>
-                    {description ? <div>{description}</div> : "Bližší informace nejsou dostupné."
+                    {description ? <div style={{height: "100%"}}>
+                        <Scrollbars style={scrollbarStyle}>
+                        {description}
+                        </Scrollbars>
+                    </div> : "Bližší informace nejsou dostupné."
                     }
                     <div style={additionalInfoStyle}>
                         <div>

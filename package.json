@@ -10,6 +10,7 @@
     "mux.js": "^5.5.3",
     "muxjs": "^2.4.18",
     "react": "^16.13.1",
+    "react-custom-scrollbars": "^4.2.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1",
     "react-spinners": "^0.8.3",

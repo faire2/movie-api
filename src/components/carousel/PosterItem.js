@@ -6,21 +6,25 @@ import {ApiContext} from "../ApiContext";
 export function PosterItem(props) {
     const [imageAvailable, setImageAvailable] = useState(props.imgSrc != null);
     const apiContext = useContext(ApiContext);
+    // responsive width
     const itemWidth = "20vh";
+    // max width derived from poster resolution
+    const maxWidth = 200;
 
     const containerStyle = {
-        fontSize: "1.8vh",
         display: "flex",
         flexFlow: "column",
         textAlign: "center",
         width: itemWidth,
+        maxWidth: maxWidth,
         marginRight: "0.5vh",
         zIndex: 1,
     };
 
     const imageStyle = {
         width: itemWidth,
-        height: "30vh",
+        maxWidth: maxWidth,
+        height: "auto",
         marginRight: "0.5vh",
         marginBottom: "0.3vh",
     };
