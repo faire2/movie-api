@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import "./App.css"
+import "./fonts.css"
 import {Genre, Language, QueryType} from "./enums";
 import {ApiContext} from "./components/ApiContext";
 import DetailPanel from "./components/detailPanel/DetailPanel";

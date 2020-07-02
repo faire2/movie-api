@@ -52,6 +52,7 @@ function Carousel(props) {
         }
     }, [props.queryType, props.searchQuery, query]);
 
+    // arrows change value held in useState and tied to innerStyle: marginLeft
     function handleArrowClick(direction) {
         const offset = 20.5;
         if (direction === Direction.LEFT) {
@@ -66,6 +67,7 @@ function Carousel(props) {
         }
     }
 
+    // overflow hidden hides items that are beyond screenport
     const containerStyle = {
         maxWidth: "100%",
         overflow: "hidden",
@@ -74,6 +76,7 @@ function Carousel(props) {
         minHeight: "20vh",
     };
 
+    // marginleft shifts carousel items left / right
     const innerStyle = {
         display: "flex",
         flexFlow: "row",
