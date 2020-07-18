@@ -4,11 +4,11 @@ import {Genre, Language, QueryType} from "./enums";
 import {ApiContext} from "./components/ApiContext";
 import DetailPanel from "./components/detailPanel/DetailPanel";
 import SearchPanel from "./components/searchPanel/SearchPanel";
-import {ModalWrapper} from "./components/ModalWrapper";
+import {ModalWrapper} from "./components/modalWrapper/ModalWrapper";
 import {MemoizedCarousel} from "./components/carousel/Carousel";
-import {FancyButton} from "./components/FancyButton";
 import {itemWidth} from "./components/carousel/posterItemStyles";
 import {PanelWrapper, SearchButtonWrapper} from "./appStyles";
+import {FancyButton} from "./components/fancyButton/FancyButton";
 
 function App() {
     // detail panel modal

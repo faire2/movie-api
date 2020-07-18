@@ -1,6 +1,6 @@
 import {ImgSize, Medium} from "../../enums";
 import React, {useContext, useState} from "react";
-import {ErrorMsgPanel} from "../ErrorMsgPanel/ErrorMsgPanel";
+import {ErrorMsgPanel} from "../errorMsgPanel/ErrorMsgPanel";
 import {ApiContext} from "../ApiContext";
 import {MissingPosterImage, PosterContainer, PosterImage} from "./posterItemStyles";
 

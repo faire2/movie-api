@@ -6,8 +6,8 @@ import {getApiPage} from "../functions/getApiPage";
 import {PropagateLoader} from "react-spinners";
 import {PosterItem} from "./PosterItem";
 import {CarouselArrow} from "./CarouselArrow";
-import {ErrorMsgPanel} from "../ErrorMsgPanel/ErrorMsgPanel";
-import {CarouselContainer, CarouselInner} from "./carouselStyles";
+import {ErrorMsgPanel} from "../errorMsgPanel/ErrorMsgPanel";
+import {CarouselContainer, CarouselInner, FeedbackPanel} from "./carouselStyles";
 import {itemWidth} from "./posterItemStyles";
 
 const Carousel = (props) => {
@@ -77,25 +77,16 @@ const Carousel = (props) => {
         }
     }
 
-    const infoStyle = {
-        position: "absolute",
-        width: "100%",
-        height: "20vw",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-    };
-
     return (
         <div>
             <h3>{props.header}</h3>
             {carouselData.results && (carouselData.results.length > 0) &&
             <CarouselContainer>
                 {(isError || isLoading) &&
-                <div style={infoStyle}>
+                <FeedbackPanel>
                     <PropagateLoader color={"#00b0f1"} loading={isLoading} size={25}/>
                     <ErrorMsgPanel message={"Při načítání dat se vyskytl problém :("}/>}
-                </div>
+                </FeedbackPanel>
                 }
                 <CarouselInner xOffset={xOffSet}>
                     {carouselData.results && carouselData.results.map((item) =>

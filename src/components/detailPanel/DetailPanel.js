@@ -2,9 +2,10 @@ import React, {useContext, useState} from "react";
 import {ApiContext} from "../ApiContext";
 import {ImgSize, Medium} from "../../enums";
 import {ReactShakaWrapper} from "../player/ReactShakaWrapper";
-import {FancyButton} from "../FancyButton";
+import {FancyButton} from "../fancyButton/FancyButton";
 import {Scrollbars} from 'react-custom-scrollbars';
 import {getFormattedDate} from "../functions/getFormattedDate";
+import {AdditionalInfo, Gradient, PanelContainer, PlayerWrapper, scrollbarStyle, TextColumn} from "./detailPanelStyles";
 
 export default function DetailPanel() {
     const [showPlayer, setShowPlayer] = useState(false);
@@ -20,76 +21,14 @@ export default function DetailPanel() {
     const release = detailData.release_date ? detailData.release_date : detailData.first_air_date;
     const backDropImgSrc = Medium.IMG + ImgSize.LARGE + detailData.backdrop_path;
 
-    const containerStyle = {
-        position: "fixed",
-        width: "80vw",
-        maxWidth: 780,
-        height: "70vh",
-        backgroundColor: "#0a181c",
-        // ensures the carousels' items are clickable
-        borderRadius: "0.4vw",
-        transition: "1s",
-        color: "#d9d9d9",
-        display: "flex",
-        flexFlow: "row",
-        backgroundImage: `url(${backDropImgSrc})`,
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "cover",
-        zIndex: 2,
-    };
-
-    const textColumnStyle = {
-        width: "30%",
-        height: "100%",
-        paddingLeft: "3vw",
-        marginBottom: "9vh",
-        top: 0,
-    };
-
-    // the background image is covered with a gradient overlay which serves as a text backdrop
-    const gradientStyle = {
-        background: "linear-gradient(90deg, rgba(0,0,0,1) 33%, rgba(255,255,255,0) 71%, rgba(255,255,255,0) 100%)",
-        width: "100%",
-        minHeight: "20vh",
-        zIndex: 2,
-        display: "flex",
-        flexFlow: "row"
-    };
-
-    // definition of text limits complemented with scrollbar
-    const scrollbarStyle = {
-        width: "100%",
-        height: "55%"
-    };
-
-    // additional information are contained in a container at the bottom of the panel
-    const additionalInfoStyle = {
-        position: "absolute",
-        bottom: "1vh",
-    };
-
-    // player element is positioned on in center of panel when not full-screened
-    // display value ensures that player starts full-screen after loading the video
-    // clicking on the wrapper unmounts the player
-    const playerStyle = {
-        position: "absolute",
-        height: "100%",
-        width: "100%",
-        display: videoLoaded ? "flex" : "none",
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: showPlayer ? "rgba(235,242,255,0.36)" : "transparent",
-    };
-
     function handleOnClick() {
         setShowPlayer(true);
     }
 
-
     return (
-        <div style={containerStyle}>
-            <div style={gradientStyle}>
-                <div style={textColumnStyle}>
+        <PanelContainer bgrImgSrc={backDropImgSrc}>
+            <Gradient>
+                <TextColumn>
                     <h1>{title}</h1>
                     {description ? <div style={{height: "100%"}}>
                         <Scrollbars style={scrollbarStyle}>
@@ -97,7 +36,7 @@ export default function DetailPanel() {
                         </Scrollbars>
                     </div> : "Bližší informace nejsou dostupné."
                     }
-                    <div style={additionalInfoStyle}>
+                    <AdditionalInfo>
                         <div>
                             Průměrné hodnocení: {vote}
                         </div>
@@ -105,12 +44,12 @@ export default function DetailPanel() {
                             Datum vydání: {getFormattedDate(release)}
                         </div>
                         <FancyButton text={"Přehrát video"} onClick={handleOnClick}/>
-                    </div>
-                </div>
-                <div style={playerStyle} onClick={() => setShowPlayer(false)}>
+                    </AdditionalInfo>
+                </TextColumn>
+                <PlayerWrapper onClick={() => setShowPlayer(false)} videoLoaded={videoLoaded} showPlayer={showPlayer}>
                     {showPlayer && <ReactShakaWrapper ref={videoRef} setVideoLoaded={setVideoLoaded}/>}
-                </div>
-            </div>
-        </div>
+                </PlayerWrapper>
+            </Gradient>
+        </PanelContainer>
     )
 }

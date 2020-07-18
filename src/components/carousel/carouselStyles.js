@@ -17,3 +17,12 @@ export const CarouselContainer = styled.div`
     margin-bottom: 2vh;
 `;
 
+// displayes loading / error state feedbacks
+export const FeedbackPanel = styled.div`
+    position: absolute;
+    width: 100%;
+    height: 20vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`;
