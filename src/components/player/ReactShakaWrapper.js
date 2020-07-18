@@ -1,4 +1,4 @@
-import 'shaka-player/dist/controls.css';
+import "shaka-player/dist/controls.css";
 import muxjs from "mux.js";
 import shaka from "shaka-player"
 import * as React from "react";
@@ -21,7 +21,7 @@ export const ReactShakaWrapper = forwardRef((props, ref) => {
                 if (isBrowserSupported) {
                     try {
                         if (mounted) {
-                            await player.load('https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8');
+                            await player.load("https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8");
                             props.setVideoLoaded(true);
                             try {
                                 ref.current.requestFullscreen();

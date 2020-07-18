@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext} from "react";
 import {Genre, QueryType, Routes} from "../../enums";
 import {PanelWrapper} from "./homePageStyles";
 import {FancyButton} from "../fancyButton/FancyButton";

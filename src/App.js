@@ -1,4 +1,4 @@
-import React, {useEffect, useLayoutEffect, useRef, useState} from 'react';
+import React, {useEffect, useLayoutEffect, useRef, useState} from "react";
 import "./fonts.css"
 import {BrowserRouter as Router, Route} from "react-router-dom";
 import HomePage from "./components/homePage/HomePage";
@@ -24,7 +24,7 @@ function App() {
         setShowSearchPanel(false);
     }
 
-    // creates ref to enable measuring item's width
+    // creates ref to enable measuring item"s width
     let containerRef = useRef();
     const [displayedItems, setDisplayedItems] = useState(0);
     const RESET_TIMEOUT = 100;
@@ -55,9 +55,9 @@ function App() {
 
         calculateDisplayedItems()
 
-        window.addEventListener('resize', resizeListener)
+        window.addEventListener("resize", resizeListener)
         return () => {
-            window.removeEventListener('resize', resizeListener)
+            window.removeEventListener("resize", resizeListener)
         }
     }, [])
 

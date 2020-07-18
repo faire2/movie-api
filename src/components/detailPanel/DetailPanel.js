@@ -3,7 +3,7 @@ import {ApiContext} from "../ApiContext";
 import {ImgSize, Medium} from "../../enums";
 import {ReactShakaWrapper} from "../player/ReactShakaWrapper";
 import {FancyButton} from "../fancyButton/FancyButton";
-import {Scrollbars} from 'react-custom-scrollbars';
+import {Scrollbars} from "react-custom-scrollbars";
 import {getFormattedDate} from "../functions/getFormattedDate";
 import {
     AdditionalInfo,
