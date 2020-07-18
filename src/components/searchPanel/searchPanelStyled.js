@@ -1,14 +1,11 @@
 import styled from "styled-components";
 
 export const SearchContainer = styled.div`
-    position: fixed;
+    position: absolute;
+    width: 100%;
+    height: 100%;
     padding: 2vw;
-    width: 80vw;
-    height: auto;
-    min-height: 70vh;
-    margin-top: 10vh;
     background-color: #0a181c;
-    border-radius: 0.4vw;
     transition: 1s;
     color: #d9d9d9;
     z-index: 2;

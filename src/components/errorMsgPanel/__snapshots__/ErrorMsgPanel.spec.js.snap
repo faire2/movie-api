@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Error panel snapshot 1`] = `
+<div
+  className="sc-AxjAm efUkaK"
+>
+  <div
+    className="sc-AxirZ cQEBkM"
+  >
+    Test message
+  </div>
+</div>
+`;

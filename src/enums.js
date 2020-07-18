@@ -17,10 +17,10 @@ export const SortBy = Object.freeze({
 
 export const Genre = Object.freeze({
     ACTION: "&with_genres=28",
-    ADVENTURE:  "&with_genres=12",
+    ADVENTURE: "&with_genres=12",
     ANIMATION: "&with_genres=16",
-    COMEDY:  "&with_genres=35",
-    CRIME:  "&with_genres=80",
+    COMEDY: "&with_genres=35",
+    CRIME: "&with_genres=80",
     DOCUMENTARY: "&with_genres=99",
     DRAMA: "&with_genres=18",
     FAMILY: "&with_genres=10751",
@@ -52,3 +52,8 @@ export const Direction = Object.freeze({
         RIGHT: "right",
     }
 );
+
+export const Routes = Object.freeze({
+    HOME: "/",
+    SEARCH: "/search"
+});

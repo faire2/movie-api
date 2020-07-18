@@ -1,14 +1,11 @@
 import React, {useEffect, useLayoutEffect, useRef, useState} from 'react';
 import "./fonts.css"
-import {Genre, Language, QueryType} from "./enums";
+import {BrowserRouter as Router, Route} from "react-router-dom";
+import HomePage from "./components/homePage/HomePage";
+import SearchPage from "./components/searchPanel/SearchPanel";
+import {Language, Routes} from "./enums";
 import {ApiContext} from "./components/ApiContext";
-import DetailPanel from "./components/detailPanel/DetailPanel";
-import SearchPanel from "./components/searchPanel/SearchPanel";
-import {ModalWrapper} from "./components/modalWrapper/ModalWrapper";
-import {MemoizedCarousel} from "./components/carousel/Carousel";
 import {itemWidth} from "./components/carousel/posterItemStyles";
-import {PanelWrapper, SearchButtonWrapper} from "./appStyles";
-import {FancyButton} from "./components/fancyButton/FancyButton";
 
 function App() {
     // detail panel modal
@@ -64,6 +61,7 @@ function App() {
         }
     }, [])
 
+
     const apiContextValues = {
         apiAddress: "https://api.themoviedb.org/3/",
         apiKey: "api_key=4c367d0da4105ce1dcb1dc2d68dec2d9",
@@ -71,6 +69,7 @@ function App() {
         language: language,
         detailData: detailData,
         displayedItems: displayedItems,
+        hideModalPanels: hideModalPanels,
         setDetailData: setDetailData,
         showDetailPanel: showDetailPanel,
         setShowDetailPanel: setShowDetailPanel,
@@ -79,32 +78,15 @@ function App() {
     };
 
     return (
-        <div>
+        <div ref={containerRef}>
             <ApiContext.Provider value={apiContextValues}>
-                <h1>Movie Api</h1>
-                <SearchButtonWrapper>
-                    <FancyButton text={"Vyhledávání"} onClick={() => setShowSearchPanel(true)}/>
-                </SearchButtonWrapper>
-                <div ref={containerRef}>
-                    {showDetailPanel &&
-                    <PanelWrapper>
-                        <DetailPanel/>
-                        <ModalWrapper hideModalPanels={hideModalPanels}/>
-                    </PanelWrapper>}
-                    {showSearchPanel &&
-                    <PanelWrapper>
-                        <SearchPanel/>
-                        <ModalWrapper hideModalPanels={hideModalPanels}/>
-                    </PanelWrapper>
-                    }
-                    <MemoizedCarousel header={"Oblíbené filmy"} queryType={QueryType.DISCOVER_MOVIE}/>
-                    <MemoizedCarousel header={"Oblíbené seriály"} queryType={QueryType.DISCOVER_TV}/>
-                    <MemoizedCarousel header={"Rodinné filmy"} queryType={QueryType.DISCOVER_MOVIE} genre={Genre.FAMILY}/>
-                    <MemoizedCarousel header={"Dokumenty"} queryType={QueryType.DISCOVER_MOVIE} genre={Genre.DOCUMENTARY}/>
-                </div>
+                <Router>
+                    <Route path={Routes.HOME} exact component={HomePage}/>
+                    <Route path={Routes.SEARCH} exact component={SearchPage}/>
+                </Router>
             </ApiContext.Provider>
         </div>
-    );
+    )
 }
 
 export default App;

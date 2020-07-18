@@ -5,7 +5,16 @@ import {ReactShakaWrapper} from "../player/ReactShakaWrapper";
 import {FancyButton} from "../fancyButton/FancyButton";
 import {Scrollbars} from 'react-custom-scrollbars';
 import {getFormattedDate} from "../functions/getFormattedDate";
-import {AdditionalInfo, Gradient, PanelContainer, PlayerWrapper, scrollbarStyle, TextColumn} from "./detailPanelStyles";
+import {
+    AdditionalInfo,
+    Center,
+    Gradient,
+    PanelContainer,
+    PlayerWrapper,
+    scrollbarStyle,
+    TextColumn
+} from "./detailPanelStyles";
+import {PropagateLoader} from "react-spinners";
 
 export default function DetailPanel() {
     const [showPlayer, setShowPlayer] = useState(false);
@@ -28,11 +37,15 @@ export default function DetailPanel() {
     return (
         <PanelContainer bgrImgSrc={backDropImgSrc}>
             <Gradient>
+                <Center>
+                    {showPlayer && !videoLoaded &&
+                    <PropagateLoader color={"#00b0f1"} loading={true} size={25}/>}
+                </Center>
                 <TextColumn>
                     <h1>{title}</h1>
                     {description ? <div style={{height: "100%"}}>
                         <Scrollbars style={scrollbarStyle}>
-                        {description}
+                            {description}
                         </Scrollbars>
                     </div> : "Bližší informace nejsou dostupné."
                     }
@@ -43,12 +56,14 @@ export default function DetailPanel() {
                         <div>
                             Datum vydání: {getFormattedDate(release)}
                         </div>
-                        <FancyButton text={"Přehrát video"} onClick={handleOnClick}/>
+                        {!showPlayer && <FancyButton text={"Přehrát video"} onClick={handleOnClick}/>}
                     </AdditionalInfo>
                 </TextColumn>
+                {showPlayer &&
                 <PlayerWrapper onClick={() => setShowPlayer(false)} videoLoaded={videoLoaded} showPlayer={showPlayer}>
-                    {showPlayer && <ReactShakaWrapper ref={videoRef} setVideoLoaded={setVideoLoaded}/>}
+                    <ReactShakaWrapper ref={videoRef} setVideoLoaded={setVideoLoaded}/>
                 </PlayerWrapper>
+                }
             </Gradient>
         </PanelContainer>
     )
