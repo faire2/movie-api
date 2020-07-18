@@ -2,32 +2,11 @@ import {ImgSize, Medium} from "../../enums";
 import React, {useContext, useState} from "react";
 import {ErrorMsgPanel} from "../ErrorMsgPanel/ErrorMsgPanel";
 import {ApiContext} from "../ApiContext";
+import {MissingPosterImage, PosterContainer, PosterImage} from "./posterItemStyles";
 
 export function PosterItem(props) {
     const [imageAvailable, setImageAvailable] = useState(props.imgSrc != null);
     const apiContext = useContext(ApiContext);
-    // responsive width
-    const itemWidth = "20vh";
-    // max width derived from poster resolution
-    const maxWidth = 200;
-
-    const containerStyle = {
-        display: "flex",
-        flexFlow: "column",
-        textAlign: "center",
-        width: itemWidth,
-        maxWidth: maxWidth,
-        marginRight: "0.5vh",
-        zIndex: 1,
-    };
-
-    const imageStyle = {
-        width: itemWidth,
-        maxWidth: maxWidth,
-        height: "auto",
-        marginRight: "0.5vh",
-        marginBottom: "0.3vh",
-    };
 
     // clicking shows modal panel with item details
     function showItemDetailPanel(item) {
@@ -51,14 +30,14 @@ export function PosterItem(props) {
     // image address
     const src = Medium.IMG + ImgSize.SMALL + props.imgSrc;
     // image has trigger set to display error message if the image is not available
-    const img = imageAvailable ? <img src={src} alt={"poster of " + props.title} style={imageStyle}
-                                onError={() => setImageAvailable(false)}/>
+    const img = imageAvailable ? <PosterImage src={src} alt={"poster of " + props.title}
+                                              onError={() => setImageAvailable(false)}/>
         : null;
 
     return (
-        <div style={containerStyle} onClick={() => showItemDetailPanel(props.item)}>
-            {imageAvailable ? img : <div style={imageStyle}><ErrorMsgPanel message={"Picture not available"}/></div>}
+        <PosterContainer onClick={() => showItemDetailPanel(props.item)}>
+            {imageAvailable ? img : <MissingPosterImage><ErrorMsgPanel message={"Picture not available"}/></MissingPosterImage>}
             <span>{title}</span>
-        </div>
+        </PosterContainer>
     )
 }

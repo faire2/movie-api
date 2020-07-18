@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useLayoutEffect, useRef, useState} from 'react';
 import "./fonts.css"
 import {Genre, Language, QueryType} from "./enums";
 import {ApiContext} from "./components/ApiContext";
@@ -7,6 +7,8 @@ import SearchPanel from "./components/searchPanel/SearchPanel";
 import {ModalWrapper} from "./components/ModalWrapper";
 import {MemoizedCarousel} from "./components/carousel/Carousel";
 import {FancyButton} from "./components/FancyButton";
+import {itemWidth} from "./components/carousel/posterItemStyles";
+import {PanelWrapper, SearchButtonWrapper} from "./appStyles";
 
 function App() {
     // detail panel modal
@@ -25,19 +27,42 @@ function App() {
         setShowSearchPanel(false);
     }
 
-    // centers movie detail
-    const detailWrapperStyle = {
-        display: "flex",
-        justifyContent: "center"
-    };
+    // creates ref to enable measuring item's width
+    let containerRef = useRef();
+    const [displayedItems, setDisplayedItems] = useState(0);
+    const RESET_TIMEOUT = 100;
 
-    // search button position
-    const searchButtonStyle = {
-        position: "absolute",
-        width: "15vw",
-        left: "0",
-        top: "0"
-    };
+    function calculateDisplayedItems() {
+        const carouselWidth = containerRef.current.offsetWidth
+        const windowHeight = window.innerHeight
+        setDisplayedItems(
+            Math.round(carouselWidth / ((windowHeight * itemWidth) / 100)),
+        )
+    }
+
+    // during first render set initial element size
+    useLayoutEffect(() => {
+        if (containerRef.current) {
+            calculateDisplayedItems()
+        }
+    })
+
+    // add throttled window listener
+    useEffect(() => {
+        let movement_timer = null
+
+        const resizeListener = () => {
+            clearTimeout(movement_timer)
+            movement_timer = setTimeout(calculateDisplayedItems, RESET_TIMEOUT)
+        }
+
+        calculateDisplayedItems()
+
+        window.addEventListener('resize', resizeListener)
+        return () => {
+            window.removeEventListener('resize', resizeListener)
+        }
+    }, [])
 
     const apiContextValues = {
         apiAddress: "https://api.themoviedb.org/3/",
@@ -45,6 +70,7 @@ function App() {
         imagesAddress: "",
         language: language,
         detailData: detailData,
+        displayedItems: displayedItems,
         setDetailData: setDetailData,
         showDetailPanel: showDetailPanel,
         setShowDetailPanel: setShowDetailPanel,
@@ -56,18 +82,20 @@ function App() {
         <div>
             <ApiContext.Provider value={apiContextValues}>
                 <h1>Movie Api</h1>
-                <div style={searchButtonStyle}><FancyButton text={"Vyhledávání"} onClick={() => setShowSearchPanel(true)}/></div>
-                <div>
+                <SearchButtonWrapper>
+                    <FancyButton text={"Vyhledávání"} onClick={() => setShowSearchPanel(true)}/>
+                </SearchButtonWrapper>
+                <div ref={containerRef}>
                     {showDetailPanel &&
-                    <div style={detailWrapperStyle}>
+                    <PanelWrapper>
                         <DetailPanel/>
                         <ModalWrapper hideModalPanels={hideModalPanels}/>
-                    </div>}
+                    </PanelWrapper>}
                     {showSearchPanel &&
-                    <div style={detailWrapperStyle}>
+                    <PanelWrapper>
                         <SearchPanel/>
                         <ModalWrapper hideModalPanels={hideModalPanels}/>
-                    </div>
+                    </PanelWrapper>
                     }
                     <MemoizedCarousel header={"Oblíbené filmy"} queryType={QueryType.DISCOVER_MOVIE}/>
                     <MemoizedCarousel header={"Oblíbené seriály"} queryType={QueryType.DISCOVER_TV}/>

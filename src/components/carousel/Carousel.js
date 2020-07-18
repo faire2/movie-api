@@ -7,12 +7,15 @@ import {PropagateLoader} from "react-spinners";
 import {PosterItem} from "./PosterItem";
 import {CarouselArrow} from "./CarouselArrow";
 import {ErrorMsgPanel} from "../ErrorMsgPanel/ErrorMsgPanel";
+import {CarouselContainer, CarouselInner} from "./carouselStyles";
+import {itemWidth} from "./posterItemStyles";
 
-function Carousel(props) {
+const Carousel = (props) => {
     const apiContext = useContext(ApiContext);
     const genre = props.genre ? props.genre : "";
     const queryType = props.queryType;
     const searchQuery = props.searchQuery;
+    const displayedItems = apiContext.displayedItems;
 
     const query = queryType === QueryType.SEARCH_MULTI ?
         searchQuery && apiContext.apiAddress + queryType + apiContext.apiKey + apiContext.language + "&query=" + searchQuery
@@ -24,6 +27,12 @@ function Carousel(props) {
     const [xOffSet, setXOffset] = useState(0);
     const [isError, setIsError] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+
+    // calculate number of displayed items
+    function calculateDisplayedItems() {
+        const firstDisplayedItemIndex = Math.abs(xOffSet / itemWidth);
+        return carouselData.results.length - firstDisplayedItemIndex - displayedItems + 1;
+    }
 
     // querry structure is different between search and category fetch
     useEffect(() => {
@@ -54,35 +63,19 @@ function Carousel(props) {
 
     // arrows change value held in useState and tied to innerStyle: marginLeft
     function handleArrowClick(direction) {
-        const offset = 20.5;
+        const offset = itemWidth;
         if (direction === Direction.LEFT) {
             if (xOffSet < 0) {
                 setXOffset(xOffSet + offset);
             }
         } else if (direction === Direction.RIGHT) {
-            if (xOffSet > (carouselData.results.length - 2) * -offset)
+            if (calculateDisplayedItems() > 0) {
                 setXOffset(xOffSet - offset);
+            }
         } else {
             console.error("Unknown direction in function handleArrowClick: " + direction)
         }
     }
-
-    // overflow hidden hides items that are beyond screenport
-    const containerStyle = {
-        maxWidth: "100%",
-        overflow: "hidden",
-        position: "relative",
-        marginBottom: "2vh",
-        minHeight: "20vh",
-    };
-
-    // marginleft shifts carousel items left / right
-    const innerStyle = {
-        display: "flex",
-        flexFlow: "row",
-        marginLeft: xOffSet + "vh",
-        transition: "1.2s",
-    };
 
     const infoStyle = {
         position: "absolute",
@@ -91,34 +84,33 @@ function Carousel(props) {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        zIndex: isError ? 1 : +1,
     };
 
     return (
         <div>
             <h3>{props.header}</h3>
             {carouselData.results && (carouselData.results.length > 0) &&
-            <div style={containerStyle}>
+            <CarouselContainer>
                 {(isError || isLoading) &&
                 <div style={infoStyle}>
                     <PropagateLoader color={"#00b0f1"} loading={isLoading} size={25}/>
                     <ErrorMsgPanel message={"Při načítání dat se vyskytl problém :("}/>}
                 </div>
                 }
-                <div style={innerStyle}>
+                <CarouselInner xOffset={xOffSet}>
                     {carouselData.results && carouselData.results.map((item) =>
                         <div key={item.id}>
                             <PosterItem imgSrc={item.poster_path} title={queryType === QueryType.DISCOVER_MOVIE ?
                                 item.title : item.name} item={item}/>
                         </div>
                     )}
-                </div>
+                </CarouselInner>
 
                 <CarouselArrow direction={Direction.LEFT} handleArrowClick={() => handleArrowClick(Direction.LEFT)}
                                glyph="<"/>
                 <CarouselArrow direction={Direction.RIGHT} handleArrowClick={() => handleArrowClick(Direction.RIGHT)}
                                glyph=">"/>
-            </div>
+            </CarouselContainer>
             }
         </div>
     )
