@@ -1,7 +1,24 @@
+export const apiKey = "api_key=4c367d0da4105ce1dcb1dc2d68dec2d9"
+
+export const Address = Object.freeze({
+    API_ADDRESS: "https://api.themoviedb.org/3/",
+    IMAGES_ADDRESS: "",
+})
+
 export const QueryType = Object.freeze({
     DISCOVER_MOVIE: "discover/movie?",
     DISCOVER_TV: "discover/tv?",
     SEARCH_MULTI: "search/multi?"
+});
+
+export const Medium = Object.freeze({
+    MOVIE: "https://api.themoviedb.org/3/",
+    IMG: "http://image.tmdb.org/t/p/",
+});
+
+export const ImgSize = Object.freeze({
+    LARGE: "w780/",
+    SMALL: "w200",
 });
 
 export const Language = Object.freeze({
@@ -35,16 +52,6 @@ export const Genre = Object.freeze({
     THRILLER: "&with_genres=53",
     WAR: "&with_genres=10752",
     WESTERN: "&with_genres=37",
-});
-
-export const ImgSize = Object.freeze({
-    LARGE: "w780/",
-    SMALL: "w200",
-});
-
-export const Medium = Object.freeze({
-    MOVIE: "https://api.themoviedb.org/3/",
-    IMG: "http://image.tmdb.org/t/p/",
 });
 
 export const Direction = Object.freeze({

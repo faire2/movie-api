@@ -1,14 +1,13 @@
 import React, {useContext, useEffect, useState} from "react";
-import axios from "axios";
 import {ApiContext} from "../ApiContext";
-import {Direction, QueryType, SortBy} from "../../enums";
-import {getApiPage} from "../functions/getApiPage";
+import {Direction, QueryType} from "../../enums";
 import {PropagateLoader} from "react-spinners";
 import {PosterItem} from "./PosterItem";
 import {CarouselArrow} from "./CarouselArrow";
 import {ErrorMsgPanel} from "../errorMsgPanel/ErrorMsgPanel";
 import {CarouselContainer, CarouselInner, FeedbackPanel} from "./carouselStyles";
 import {itemWidth} from "./posterItemStyles";
+import {getCarouselData} from "../functions/getData";
 
 const Carousel = (props) => {
     const apiContext = useContext(ApiContext);
@@ -17,49 +16,45 @@ const Carousel = (props) => {
     const searchQuery = props.searchQuery;
     const displayedItems = apiContext.displayedItems;
 
-    const query = queryType === QueryType.SEARCH_MULTI ?
-        searchQuery && apiContext.apiAddress + queryType + apiContext.apiKey + apiContext.language + "&query=" + searchQuery
-        + getApiPage(1) + genre
-        : apiContext.apiAddress + queryType + apiContext.apiKey + apiContext.language + SortBy.POPULARITY_DESC
-        + getApiPage(1) + genre;
-
     const [carouselData, setCarouselData] = useState([]);
     const [xOffSet, setXOffset] = useState(0);
     const [isError, setIsError] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [pageToLoad, setPageToLoad] = useState(2);
+    const [totalPages, setTotalPages] = useState(null);
 
     // calculate number of displayed items
-    function calculateDisplayedItems() {
+    function calculateItemsToTheRight() {
         const firstDisplayedItemIndex = Math.abs(xOffSet / itemWidth);
-        return carouselData.results.length - firstDisplayedItemIndex - displayedItems + 1;
+        return carouselData.length - firstDisplayedItemIndex - displayedItems + 1;
     }
 
-    // querry structure is different between search and category fetch
+    // fetch data with loading and error states
     useEffect(() => {
         let mounted = true;
 
-        async function fetchCarouselData() {
-            setIsError(false);
-            setIsLoading(true);
-            try {
-                const result = await axios.get(query);
-                console.log("Query: " + query);
-                if (mounted) {
-                    setCarouselData(result.data);
-                }
-            } catch (error) {
-                setIsError(true);
-                console.error(error);
-            }
-            setIsLoading(false);
-        }
-
-        fetchCarouselData();
+        fetchCarouselData(mounted, 1);
 
         return () => {
             mounted = false;
         }
-    }, [props.queryType, props.searchQuery, query]);
+    }, [genre, queryType, searchQuery]);
+
+    async function fetchCarouselData(mounted, pageNumber) {
+        setIsError(false);
+        setIsLoading(true);
+        try {
+            const result = await getCarouselData(queryType, genre, searchQuery, pageNumber);
+            if (mounted) {
+                setCarouselData([...carouselData, ...result.data.results]);
+                setTotalPages(result.data["total_pages"]);
+            }
+        } catch (error) {
+            setIsError(true);
+            console.error(error);
+        }
+        setIsLoading(false);
+    }
 
     // arrows change value held in useState and tied to innerStyle: marginLeft
     function handleArrowClick(direction) {
@@ -69,8 +64,17 @@ const Carousel = (props) => {
                 setXOffset(xOffSet + offset);
             }
         } else if (direction === Direction.RIGHT) {
-            if (calculateDisplayedItems() > 0) {
+            const itemsToTheRight = calculateItemsToTheRight();
+            if (itemsToTheRight > 0) {
                 setXOffset(xOffSet - offset);
+                if (itemsToTheRight < 4 && pageToLoad > 0) {
+                    fetchCarouselData(true, pageToLoad);
+                    if (totalPages > pageToLoad) {
+                    setPageToLoad(pageToLoad => pageToLoad++);
+                    } else {
+                        setPageToLoad(0);
+                    }
+                }
             }
         } else {
             console.error("Unknown direction in function handleArrowClick: " + direction)
@@ -80,7 +84,7 @@ const Carousel = (props) => {
     return (
         <div>
             <h3>{props.header}</h3>
-            {carouselData.results && (carouselData.results.length > 0) &&
+            {carouselData && (carouselData.length > 0) &&
             <CarouselContainer>
                 {(isError || isLoading) &&
                 <FeedbackPanel>
@@ -89,7 +93,7 @@ const Carousel = (props) => {
                 </FeedbackPanel>
                 }
                 <CarouselInner xOffset={xOffSet}>
-                    {carouselData.results && carouselData.results.map((item) =>
+                    {carouselData.map((item) =>
                         <div key={item.id}>
                             <PosterItem imgSrc={item.poster_path} title={queryType === QueryType.DISCOVER_MOVIE ?
                                 item.title : item.name} item={item}/>
